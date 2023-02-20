@@ -1,0 +1,25 @@
+version: '3'
+services:
+  datascience:
+    container_name: ${CONTAINER_PREFIX}
+    build:
+      context: ..
+      dockerfile: docker/datascience/Dockerfile
+      args:
+        DATASCIENCE_UID: ${HOST_UID}
+        DATASCIENCE_GID: ${HOST_GID}
+        DATASCIENCE_HOME: ${PROJECT_DIR}
+    environment:
+      - "PROJECT_DIR=${PROJECT_DIR}"
+      - "JUPYTER_PORT=${JUPYTER_PORT}"
+    volumes:
+      - ${PROJECT_DIR}:${PROJECT_DIR}
+    ports:
+      - ${JUPYTER_PORT}:${JUPYTER_PORT}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
