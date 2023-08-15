@@ -36,4 +36,8 @@ notebook:
 
 config: FORCE
 	make env && docker-compose -f docker/datascience/docker-compose.yml config
+
+workspace: FORCE
+	sudo bash workspace/install_system_deps.sh && bash workspace/install.sh
+	
 FORCE: ;
