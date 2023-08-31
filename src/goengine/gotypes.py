@@ -11,7 +11,7 @@ class Player(enum.Enum):
 
     
 class Point(namedtuple('Point', 'row col')):
-    def neighbour(self):
+    def neighbor(self):
         """
         Returns neighbours of the field, left, right, top, bottom
         """
