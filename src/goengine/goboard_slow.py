@@ -2,7 +2,7 @@ import copy
 from goengine.gotypes import Player, Point
 
 
-class Move():
+class Move:
     """Class factory, which represents all possible moves"""
 
     def __init__(self, point=None, is_pass: bool = False, is_resign: bool = False):
@@ -25,7 +25,7 @@ class Move():
         return Move(is_resign=True)
 
 
-class GoString():
+class GoString:
     """
     Class representing a group of same colored stones,
     group has one set of liberties.
@@ -64,7 +64,7 @@ class GoString():
         )
 
 
-class Board():
+class Board:
     """
     Class used to represent board of the game
     """
@@ -136,6 +136,33 @@ class Board():
                 self._remove_string(other_color_string)
 
 
-class GameState():
+class GameState:
     def __init__(self, board, next_player, previous, move):
-        
+        self.board = board
+        self.next_player = next_player
+        self.previous_state = previous
+        self.last_move = move
+
+    def apply_move(self, move):
+        if move.is_play:
+            next_board = copy.deepcopy(self.board)
+            next_board.place_stone(self.next_player.other, move.point)
+
+        else:
+            next_board = self.board
+
+        return GameState(next_board, self.next_player.other, self, move)
+
+    @classmethod
+    def new_game(cls, board_size):
+        if isinstance(board_size, int):
+            board_size = (board_size, board_size)
+        board = Board(*board_size)
+        return GameState(board, Player.black, None, None)
+
+    def is_over(self):
+        if self.last_move is None:
+            return False
+        if self.last_move.is_resign:
+            return True
+        second
