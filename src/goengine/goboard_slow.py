@@ -165,4 +165,3 @@ class GameState:
             return False
         if self.last_move.is_resign:
             return True
-        second
